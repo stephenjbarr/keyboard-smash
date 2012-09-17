@@ -114,12 +114,12 @@ function OnKeydown(event)
     {
       case 'a':
       case 'A':
-	  Mesh.position.x += 20;
+	  MoveMeshRight(Mesh);
           break;
 
       case 'b':
       case 'B':
-	  Mesh.position.x -= 20;
+	  MoveMeshLeft(Mesh);
           break;
 
       case 'c':
@@ -149,6 +149,15 @@ function OnKeydown(event)
 	  Scene.add(Mesh);
 	  break;
     }
+}
+function MoveMeshRight(SomeMesh)
+{
+    SomeMesh.position.x += 20;
+}
+
+function MoveMeshLeft(SomeMesh)
+{
+    SomeMesh.position.x -= 20;
 }
 
 function ReplaceMesh(Scale)
