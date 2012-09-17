@@ -1,0 +1,43 @@
+Baby Flip
+=========
+
+Goal: Create some fun browser-based games for Jeffrey Arthur Barr! Use
+JavaScript and three.js to create some simple 3D, perhaps adding in
+some physics later on.
+
+September 15, 2012
+------------------
+
+* Time to get started. Create directory and index.html. Download
+  minified three.js from
+  http://mrdoob.github.com/three.js/build/three.min.js
+
+* Got a bunch of stuff working!
+
+September 16, 2012
+------------------
+
+* Try (and fail) to generalize the image loading. I don't understand
+  enough about JavaScript closures to do this.
+
+* Evening, clone Stephen's github repo, add my files, init my local
+  repo, and commit.
+
+=======================================================================
+
+Resources
+---------
+
+Sound in JavaScript:
+  http://www.schillmania.com/projects/soundmanager2/
+
+DOM Events:
+  https://developer.mozilla.org/en-US/docs/DOM/DOM_event_reference
+
+Three.JS:
+* Tutorial - http://learningthreejs.com/
+* Physics - https://github.com/chandlerprall/Physijs
+
+Cool Icons:
+* http://thenounproject.com/
+
