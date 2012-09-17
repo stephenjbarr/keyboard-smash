@@ -124,12 +124,12 @@ function OnKeydown(event)
 
       case 'c':
       case 'C':
-	  Mesh.position.y += 20;
+	  MoveMeshDown(Mesh);
           break;
 
       case 'd':
       case 'D':
-	  Mesh.position.y -= 20;
+	  MoveMeshUp(Mesh);
           break;
 
       case 'e':
@@ -158,6 +158,16 @@ function MoveMeshRight(SomeMesh)
 function MoveMeshLeft(SomeMesh)
 {
     SomeMesh.position.x -= 20;
+}
+
+function MoveMeshDown(SomeMesh)
+{
+    SomeMesh.position.y += 20;
+}
+
+function MoveMeshUp(SomeMesh)
+{
+    SomeMesh.position.y -= 20;
 }
 
 function ReplaceMesh(Scale)
