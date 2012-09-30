@@ -20,8 +20,8 @@ var Loader3;
 var Texture1;
 var Texture2;
 var Texture3;
-var ObjectTypes = [ObjectCUBE, ObjectSPHERE, ObjectOCTAHEDRON, ObjectTORUS];
-var ObjectType  = 0;
+var ObjectTypes   = [ObjectCUBE, ObjectSPHERE, ObjectOCTAHEDRON, ObjectTORUS];
+var CurObjectType = 0;
 
 // State
 var CurTexture;
@@ -93,7 +93,7 @@ function Animate()
 
 function GenerateCubeMesh(CubeSize, CubeColor)
 {
-    switch (ObjectTypes[ObjectType])
+    switch (ObjectTypes[CurObjectType])
     {
         case ObjectCUBE:
 	    Geometry = new THREE.CubeGeometry(CubeSize, CubeSize, CubeSize);
@@ -232,10 +232,10 @@ function PickNextTexture()
 
 function PickNextObject()
 {
-    ObjectType++;
-    if (ObjectType == ObjectTypes.length)
+    CurObjectType++;
+    if (CurObjectType == ObjectTypes.length)
     {
-	ObjectType = 0;
+	CurObjectType = 0;
     }
 
 }
