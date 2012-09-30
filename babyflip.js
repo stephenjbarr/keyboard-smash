@@ -69,7 +69,7 @@ function Init()
     // A scene
     Scene = new THREE.Scene();
 
-    Mesh = GenerateCubeMesh(DefaultCubeSize, DefaultCubeColor);
+    Mesh = GenerateMesh(DefaultCubeSize, DefaultCubeColor);
     Scene.add(Mesh);
 
     Renderer = new THREE.CanvasRenderer();
@@ -92,7 +92,7 @@ function Animate()
     Renderer.render(Scene, Camera);
 }
 
-function GenerateCubeMesh(CubeSize, CubeColor)
+function GenerateMesh(CubeSize, CubeColor)
 {
     switch (ObjectTypes[CurObjectType])
     {
@@ -208,7 +208,7 @@ function ReplaceMesh(Scale)
     OldCubePosition = Mesh.position;
     OldCubeRotation = Mesh.rotation;
     Scene.remove(Mesh);
-    Mesh = GenerateCubeMesh(OldCubeSize * Scale, DefaultCubeColor);
+    Mesh = GenerateMesh(OldCubeSize * Scale, DefaultCubeColor);
     Mesh.position = OldCubePosition;
     Mesh.rotation = OldCubeRotation;
     Scene.add(Mesh);
