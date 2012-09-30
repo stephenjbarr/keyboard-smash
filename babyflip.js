@@ -1,3 +1,12 @@
+// Constants
+var DefaultCubeSize  = 200;
+var DefaultCubeColor = 0xff0000;
+
+var ObjectCUBE       = 1;
+var ObjectSPHERE     = 2;
+var ObjectOCTAHEDRON = 3;
+var ObjectTORUS      = 4;
+
  // Global variables
 var Camera;
 var Scene;
@@ -8,23 +17,22 @@ var Mesh;
 var Loader1;
 var Loader2;
 var Loader3;
+
 var Texture1;
 var Texture2;
 var Texture3;
+var Textures    = [];
+var ObjectTypes = [ObjectCUBE, ObjectSPHERE, ObjectOCTAHEDRON, ObjectTORUS];
 
 // State
-var CurTexture;
-
-// Constants
-var DefaultCubeSize  = 200;
-var DefaultCubeColor = 0xff0000;
+var CurTexture    = 0;
+var CurObjectType = 0;
 
 Init();
 Animate();
 
 function Init()
 {
-
     // Three textures and associated loaders
     Texture1 = new THREE.Texture();
     Texture2 = new THREE.Texture();
@@ -32,6 +40,8 @@ function Init()
     Loader1  = new THREE.ImageLoader();
     Loader2  = new THREE.ImageLoader();
     Loader3  = new THREE.ImageLoader();
+    
+    Textures.push(Texture1, Texture2, Texture3);
 
     Loader1.addEventListener('load', function (event) {
 	    Texture1.image = event.content;
@@ -52,9 +62,6 @@ function Init()
     Loader2.load('carmen_jeffrey_2012_06.jpg');
     Loader3.load('assistant_blogger.jpg');
 
-    // Set initial texture
-    CurTexture = Texture1;
-
     // A camera
     Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
     Camera.position.z = 1000;
@@ -62,7 +69,7 @@ function Init()
     // A scene
     Scene = new THREE.Scene();
 
-    Mesh = GenerateCubeMesh(DefaultCubeSize, DefaultCubeColor);
+    Mesh = GenerateMesh(DefaultCubeSize, DefaultCubeColor);
     Scene.add(Mesh);
 
     Renderer = new THREE.CanvasRenderer();
@@ -85,11 +92,28 @@ function Animate()
     Renderer.render(Scene, Camera);
 }
 
-function GenerateCubeMesh(CubeSize, CubeColor)
+function GenerateMesh(CubeSize, CubeColor)
 {
-    Geometry = new THREE.CubeGeometry(CubeSize, CubeSize, CubeSize);
-    //    Material = new THREE.MeshBasicMaterial({ color: CubeColor, wireframe: true });
-    Material = new THREE.MeshBasicMaterial({ map: CurTexture, overdraw: true });
+    switch (ObjectTypes[CurObjectType])
+    {
+        case ObjectCUBE:
+	    Geometry = new THREE.CubeGeometry(CubeSize, CubeSize, CubeSize);
+	    break;
+
+        case ObjectSPHERE:
+	    Geometry = new THREE.SphereGeometry(CubeSize, 3, 2);
+	    break;
+
+        case ObjectOCTAHEDRON:
+	    Geometry = new THREE.OctahedronGeometry(CubeSize, 2);
+	    break;
+
+        case ObjectTORUS:
+            Geometry = new THREE.TorusGeometry(CubeSize, 40);
+	    break;
+    }
+
+    Material = new THREE.MeshBasicMaterial({ map: Textures[CurTexture], overdraw: true });
     CubeMesh = new THREE.Mesh(Geometry, Material);
 
     // Keep extra data until we know how to get it from the Mesh
@@ -146,7 +170,15 @@ function OnKeydown(event)
       case 'G':
 	  PickNextTexture();
           ReplaceMesh(1.0);
-	  Scene.add(Mesh);
+	  break;
+
+      case 'h':
+      case 'H':
+	  PickNextObject();
+          ReplaceMesh(1.0);
+	  break;
+
+      default:
 	  break;
     }
 }
@@ -176,7 +208,7 @@ function ReplaceMesh(Scale)
     OldCubePosition = Mesh.position;
     OldCubeRotation = Mesh.rotation;
     Scene.remove(Mesh);
-    Mesh = GenerateCubeMesh(OldCubeSize * Scale, DefaultCubeColor);
+    Mesh = GenerateMesh(OldCubeSize * Scale, DefaultCubeColor);
     Mesh.position = OldCubePosition;
     Mesh.rotation = OldCubeRotation;
     Scene.add(Mesh);
@@ -184,17 +216,18 @@ function ReplaceMesh(Scale)
 
 function PickNextTexture()
 {
-    if (CurTexture == Texture1)
-	{
-	    CurTexture = Texture2;
-	}
-    else if (CurTexture == Texture2)
-	{
-	    CurTexture = Texture3;
-	}
-    else
-	{
-	    CurTexture = Texture1;
-	}
+    CurTexture++;
+    if (CurTexture == Textures.length)
+    {
+	CurTexture = 0;
+    }
 }
 
+function PickNextObject()
+{
+    CurObjectType++;
+    if (CurObjectType == ObjectTypes.length)
+    {
+	CurObjectType = 0;
+    }
+}
