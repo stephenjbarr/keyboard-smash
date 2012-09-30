@@ -1,3 +1,12 @@
+// Constants
+var DefaultCubeSize  = 200;
+var DefaultCubeColor = 0xff0000;
+
+var ObjectCUBE       = 1;
+var ObjectSPHERE     = 2;
+var ObjectOCTAHEDRON = 3;
+var ObjectTORUS      = 4;
+
  // Global variables
 var Camera;
 var Scene;
@@ -11,20 +20,17 @@ var Loader3;
 var Texture1;
 var Texture2;
 var Texture3;
+var ObjectTypes = [ObjectCUBE, ObjectSPHERE, ObjectOCTAHEDRON, ObjectTORUS];
+var ObjectType  = 0;
 
 // State
 var CurTexture;
-
-// Constants
-var DefaultCubeSize  = 200;
-var DefaultCubeColor = 0xff0000;
 
 Init();
 Animate();
 
 function Init()
 {
-
     // Three textures and associated loaders
     Texture1 = new THREE.Texture();
     Texture2 = new THREE.Texture();
@@ -87,8 +93,25 @@ function Animate()
 
 function GenerateCubeMesh(CubeSize, CubeColor)
 {
-    Geometry = new THREE.CubeGeometry(CubeSize, CubeSize, CubeSize);
-    //    Material = new THREE.MeshBasicMaterial({ color: CubeColor, wireframe: true });
+    switch (ObjectTypes[ObjectType])
+    {
+        case ObjectCUBE:
+	    Geometry = new THREE.CubeGeometry(CubeSize, CubeSize, CubeSize);
+	    break;
+
+        case ObjectSPHERE:
+	    Geometry = new THREE.SphereGeometry(CubeSize, 3, 2);
+	    break;
+
+        case ObjectOCTAHEDRON:
+	    Geometry = new THREE.OctahedronGeometry(CubeSize, 2);
+	    break;
+
+        case ObjectTORUS:
+            Geometry = new THREE.TorusGeometry(CubeSize, 40);
+	    break;
+    }
+
     Material = new THREE.MeshBasicMaterial({ map: CurTexture, overdraw: true });
     CubeMesh = new THREE.Mesh(Geometry, Material);
 
@@ -146,7 +169,16 @@ function OnKeydown(event)
       case 'G':
 	  PickNextTexture();
           ReplaceMesh(1.0);
-	  Scene.add(Mesh);
+	  Scene.add(Mesh); //
+	  break;
+
+      case 'h':
+      case 'H':
+	  PickNextObject();
+          ReplaceMesh(1.0);
+	  break;
+
+      default:
 	  break;
     }
 }
@@ -198,3 +230,12 @@ function PickNextTexture()
 	}
 }
 
+function PickNextObject()
+{
+    ObjectType++;
+    if (ObjectType == ObjectTypes.length)
+    {
+	ObjectType = 0;
+    }
+
+}
