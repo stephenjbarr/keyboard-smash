@@ -170,7 +170,6 @@ function OnKeydown(event)
       case 'G':
 	  PickNextTexture();
           ReplaceMesh(1.0);
-	  Scene.add(Mesh); //
 	  break;
 
       case 'h':
@@ -231,5 +230,4 @@ function PickNextObject()
     {
 	CurObjectType = 0;
     }
-
 }
